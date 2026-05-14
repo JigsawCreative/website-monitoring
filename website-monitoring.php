@@ -17,11 +17,11 @@ if (file_exists(WM_PATH . 'vendor/autoload.php')) {
     require_once WM_PATH . 'vendor/autoload.php';
 
     // Load environment variables from .env file in root
-    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-    $dotenv->load();
+    // $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+    // $dotenv->load();
 }
 
-// Classes required
-use WebsiteMonitoring\Init\TMPC_Init;
+// Initialize the plugin
+use WebsiteMonitoring\PLugin;
 
-add_action('plugins_loaded', [WM_Init::class, 'init']);
+add_action('plugins_loaded', [Plugin::class, 'init']);
