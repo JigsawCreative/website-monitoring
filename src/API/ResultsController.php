@@ -11,6 +11,28 @@
                 'callback' => [self::class, 'process_results'],
                 'permission_callback' => '__return_true', // For testing, allow all. Implement proper permissions later.
             ] );
+
+            register_rest_route( 'website-monitoring/v1', '/results', [
+                'methods' => 'GET',
+                'callback' => [self::class, 'fetch_results'],
+                'permission_callback' => '__return_true', // For testing, allow all. Implement proper permissions later.
+            ] );
+        }
+
+        public static function fetch_results(WP_REST_Request $request) {
+            
+            global $wpdb;
+
+            // Fetch results with associated run and site data
+            $results = $wpdb->get_results(
+                "SELECT r.*, ru.site_id, s.name AS site_name 
+                 FROM {$wpdb->prefix}cbwm_results r
+                 JOIN {$wpdb->prefix}cbwm_runs ru ON r.run_id = ru.id
+                 JOIN {$wpdb->prefix}cbwm_sites s ON ru.site_id = s.id",
+                ARRAY_A
+            );
+
+            return rest_ensure_response($results);
         }
 
         public static function process_results(WP_REST_Request $request) {

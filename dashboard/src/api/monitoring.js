@@ -1,10 +1,12 @@
 export async function fetchResults() {
 
     // Import the API base URL from environment variables
-    //const apiBase = import.meta.env.VITE_API_BASE_URL;
+    const apiBase = import.meta.env.VITE_API_BASE_URL;
 
-    const res = await fetch(`https://testenv.local/wp-json/website-monitoring/v1/results`);
+    // Fetch results from the API endpoint
+    const res = await fetch(`${apiBase}/results`);
 
+    // Return the JSON response
     return res.json();
 
 }
