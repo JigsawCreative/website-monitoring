@@ -5,22 +5,34 @@
     use WP_REST_Request;
 
     class ResultsController {
+
+        /**
+         * Register REST API routes for results endpoint
+         *
+         * @return void
+         */
         public static function register_routes() {
             register_rest_route( 'website-monitoring/v1', '/results', [
                 'methods' => 'POST',
-                'callback' => [self::class, 'process_results'],
+                'callback' => self::process_results(...),
                 'permission_callback' => '__return_true', // For testing, allow all. Implement proper permissions later.
             ] );
 
             register_rest_route( 'website-monitoring/v1', '/results', [
                 'methods' => 'GET',
-                'callback' => [self::class, 'fetch_results'],
+                'callback' => self::fetch_results(...),
                 'permission_callback' => '__return_true', // For testing, allow all. Implement proper permissions later.
             ] );
         }
 
+        /**
+         * Fetch results from the database
+         *
+         * @param WP_REST_Request $request
+         * @return \WP_REST_Response
+         */
         public static function fetch_results(WP_REST_Request $request) {
-            
+
             global $wpdb;
 
             // Fetch results with associated run and site data
@@ -171,7 +183,7 @@
                         'started_at' => $result['started_at'],
                         'completed_at' => $result['completed_at'],
                         'overall_status' => $result['overall_status'],
-                        'response_time' => isset($result['response_time']) ? $result['response_time'] : null,
+                        'response_time' => $result['response_time'] ?? null,
                         'run_id' => $run_id
                     ],
                     [

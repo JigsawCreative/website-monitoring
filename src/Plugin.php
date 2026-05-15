@@ -4,7 +4,7 @@
 
     class Plugin {
         public static function init() {
-            
+
             // Load admin and API components
             
         }
